@@ -20,9 +20,10 @@ app.use('*', cors());
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 
+
+app.use('/', require('./viewer'));
 app.use('/api',require('./fileupload'));
 app.use('/api', require('./routes'));
-app.use('/', require('./viewer'));
 
 const port = process.env.PORT || 8080;
 app.listen(port);
