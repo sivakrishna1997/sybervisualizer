@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row vh-100 justify-content-center align-items-center">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center py-3">LOGIN</h2>
+
+                    <form action="javascript:void(0)" class="px-3">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" id="email"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="password">
+                        </div>
+                        <div class="text-center py-4">
+                            <button type="submit" class="btn btn-primary" onclick="login()">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div>
+                <h5 id="errormessage" class="text-danger text-center pt-2"></h5>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"> </script>
+    
+    <script src="bootstrap/popper.min.js" crossorigin="anonymous"></script>
+    <script src="bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

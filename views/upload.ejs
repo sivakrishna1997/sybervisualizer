@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row justify-content-center vh-100 align-items-center">
+        <div class="col-lg-4 col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center py-3 pb-5">UPLOAD FILES</h2>
+                    <form class="px-3" action="/api/savefiles" method="post" enctype="multipart/form-data">
+                        <div class="my-3">
+                            <input class="form-control" type="file" name="myfiles" accept=".html" multiple required>
+                        </div>
+                        <div class="py-4 text-center">
+                            <button class="btn btn-primary" type="submit" value="Upload"> Upload </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"> </script>
+    
+    <script src="bootstrap/popper.min.js" crossorigin="anonymous"></script>
+    <script src="bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

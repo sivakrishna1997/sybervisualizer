@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row vh-100 justify-content-evenly align-items-center">
+        <div class="col-md-4">
+            <a href="/dashboard" class="nav-link text-black">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="text-center py-3">Dashboard</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/upload" class="nav-link text-black">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="text-center py-3">File Upload</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- <script>
+        function login() {
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let errormessage = document.getElementById('errormessage')
+            console.log("email==>", email)
+            errormessage.innerHTML = "";
+            if (email === "surya@syberzen.com" && password === "surya") {
+                errormessage.innerHTML = "";
+                localStorage.setItem('isloggedin', true);
+                // document.getElementById("routertoexcel").click();
+                window.location.replace('/uploadexcel');
+            } else {
+                setTimeout(() => {
+                    errormessage.innerHTML = "Invalid Login"
+                }, 500);
+            }
+        }
+    </script> -->
+
+    <script src="/js/auth.js"> </script>
+
+    <script src="bootstrap/popper.min.js" crossorigin="anonymous"></script>
+    <script src="bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
