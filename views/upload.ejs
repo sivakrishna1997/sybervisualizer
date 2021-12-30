@@ -149,7 +149,6 @@
 
         async function getAllFolders() {
             folders = await getFolders();
-            console.log("folders==>", folders);
             folderslistRef.innerHTML = "";
             folders.forEach((name) => {
                 folderslistRef.innerHTML += `<li class="nav-item navItem w-100" onClick="makeItActive(this, '${name}')">
@@ -163,7 +162,6 @@
 
         async function resetUsers() {
             users = await getUsers();
-            console.log("users==>", users);
             users.forEach(x => {
                 x.hasFolder = false;
                 if (x.folders.includes(selectedFolder)) {
@@ -183,8 +181,6 @@
 
         async function getFilesForSelectedFolder() {
             files = await getFiles(selectedFolder);
-            console.log("files==>", files);
-
             filesListRef.innerHTML = "";
             files.forEach((name) => {
                 filesListRef.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-start">

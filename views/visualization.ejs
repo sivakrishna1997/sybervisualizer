@@ -69,14 +69,10 @@
         })
         async function getAllFolders() {
             folders = await getFolders();
-            console.log("folders==>", folders);
-
             getFilesOfFolders();
         }
         async function getFilesOfFolders() {
             files = await getFilesFromFolders(folders);
-            console.log("files==>", files);
-
             fileslistRef.innerHTML = "";
             files.forEach((item) => {
                 fileslistRef.innerHTML += `<li class="nav-item navItem w-100" onClick="makeItActive(this)">

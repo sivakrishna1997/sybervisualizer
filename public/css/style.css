@@ -154,3 +154,9 @@
 .borderTop{
     border-top: 4px solid #9cc666;
 }
+
+.logo{
+    position: fixed;
+    top: 0;
+    left: 0;
+}
