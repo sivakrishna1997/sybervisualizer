@@ -6,6 +6,7 @@ const user = model('user',
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true, },
         role: { type: Number, required: true, enum: [1, 2], default: 2 }, // 1 for admin, 2 for user 
+        folders: ['string'],
         active: { type: Boolean, default: true },
         cdate: { type: Date },
         udate: { type: Date }
@@ -51,7 +52,9 @@ const login = (req, res) => {
 const getusers = (req, res) => {
     try {
         let body = req.body;
-        let query = {}
+        let query = {};
+        body.role ? query['role'] = body.role : null;
+
         user.find(query).then(
             doc => {
                 success(req, res, "Users!", doc);
@@ -59,6 +62,24 @@ const getusers = (req, res) => {
                 error(req, res, '', err)
             }
         )
+    } catch (err) {
+        error(req, res, '', err)
+    }
+}
+
+const getUsersData = (body = {}) => {
+    try {
+        return new Promise((resolve, reject) => {
+            let query = {};
+            body.role ? query['role'] = body.role : null;
+            user.find(query).then(
+                doc => {
+                    resolve(doc)
+                }, err => {
+                    resolve([])
+                }
+            )
+        })
     } catch (err) {
         error(req, res, '', err)
     }
@@ -84,11 +105,66 @@ const deleteuser = (req, res) => {
     }
 }
 
+const addFolder = (req, res) => {
+    try {
+        let body = req.body;
+        let query = {
+            email: body.email
+        }
+        user.updateMany(query, { $addToSet: { folders: body.folderName } }).then(
+            doc => {
+                if (doc.matchedCount == 1) {
+                    if (doc.modifiedCount == 0) {
+                        error(req, res, "Folder exist!", null);
+                    } else {
+                        success(req, res, "Folder added successfully!", {});
+                    }
+                } else {
+                    error(req, res, "User not matched", null);
+                }
+            }, err => {
+                error(req, res, '', err)
+            }
+        )
+    } catch (err) {
+        error(req, res, '', err)
+    }
+}
+
+
+const removeFolder = (req, res) => {
+    try {
+        let body = req.body;
+        let query = {
+            email: body.email
+        }
+        user.updateMany(query, { $pull: { folders: body.folderName } }).then(
+            doc => {
+                if (doc.matchedCount == 1) {
+                    if (doc.modifiedCount == 0) {
+                        error(req, res, "No folder found!", null);
+                    } else {
+                        success(req, res, "Folder removed successfully!", {});
+                    }
+                } else {
+                    error(req, res, "User not matched", null);
+                }
+            }, err => {
+                error(req, res, '', err)
+            }
+        )
+    } catch (err) {
+        error(req, res, '', err)
+    }
+}
 
 module.exports = {
     adduser,
     login,
     getusers,
-    deleteuser
+    deleteuser,
+    addFolder,
+    removeFolder,
+    getUsersData
 }
 

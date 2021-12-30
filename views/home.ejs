@@ -7,27 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="bootstrap/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet" crossorigin="anonymous">
+
     <style>
         body {
             overflow-x: hidden;
+        }
+        .logo{
+            position: fixed;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 
 <body>
-    <div class="row vh-100 justify-content-evenly align-items-center">
-        <div class="col-md-4">
+    <div class="logo">
+        <img src="/images/logo.png" alt="logo" width="100%">
+    </div>
+    <div class="row vh-100 justify-content-center align-items-center">
+        <div class="col-md-3">
             <a href="/dashboard" class="nav-link text-black">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm borderTop">
                     <div class="card-body">
                         <h2 class="text-center py-3">Dashboard</h2>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <a href="/visualization" class="nav-link text-black">
+                <div class="card shadow-sm borderTop">
+                    <div class="card-body">
+                        <h2 class="text-center py-3">Visualization</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
             <a href="/upload" class="nav-link text-black">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm borderTop">
                     <div class="card-body">
                         <h2 class="text-center py-3">File Upload</h2>
                     </div>

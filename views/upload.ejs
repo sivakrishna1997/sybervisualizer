@@ -7,35 +7,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Upload</title>
     <link href="bootstrap/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
     <style>
         body {
             overflow-x: hidden;
         }
     </style>
+
 </head>
 
 <body>
-    <div class="row justify-content-center vh-100 align-items-center">
-        <div class="col-lg-4 col-md-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h2 class="text-center py-3 pb-5">UPLOAD FILES</h2>
-                    <form class="px-3" action="/api/savefiles" method="post" enctype="multipart/form-data">
-                        <div class="my-3">
-                            <input class="form-control" type="file" name="myfiles" accept=".html" multiple required>
-                        </div>
-                        <div class="py-4 text-center">
-                            <button class="btn btn-primary" type="submit" value="Upload"> Upload </button>
-                        </div>
-                    </form>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <a class="navbarBrand" href="#">
+                    <img src="/images/logo.png" alt="logo" width="100%">
+                </a>
+
+                <div class="pb-2">
+                    <ul class="nav flex-column" id="folderslist"> </ul>
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10  pt-2">
+                <div class="row">
+                    <div class="col-md-12 text-end py-1">
+                        <button class="btn btn-primary" onClick="getcreatenewfolder()"> Create New Folder
+                        </button>
+                    </div>
                 </div>
 
-            </div>
+                <div class="row ps-3 justify-content-center">
+                    <div class="col-md-6 py-5 mt-5" id="create_new_folder">
+                        <div class="card shadow-sm borderTop">
+                            <div class="card-body">
+                                <h2 class="text-center py-3 pb-5">Create Folder</h2>
+                                <form class="px-3" action="javascript:void(0)" onsubmit="createFolder()">
+                                    <div class="my-3">
+                                        <input type="text" placeholder="FolderName" name="FolderName"
+                                            class="form-control" id="FolderName">
+                                    </div>
+                                    <div class="text-center py-4">
+                                        <button class="btn btn-danger me-4"
+                                            onclick="window.location.reload()">Cancel</button>
+                                        <button class="btn btn-primary" onclick="createFolder()">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 py-2" id="upload_files">
+                        <div class="card shadow-sm borderTop">
+                            <div class="card-body">
+                                <h2 class="text-center pb-3 ">Upload Files</h2>
+                                <form class="px-3" action="/api/savefiles" method="post" enctype="multipart/form-data">
+                                    <div class="my-3">
+                                        <input class="form-control d-none" type="text" name="folderName" value=""
+                                            id="inputFoldername">
+                                        <input class="form-control" type="file" name="myfiles" accept=".html" multiple
+                                            required>
+                                    </div>
+                                    <div class="py-3 text-center">
+                                        <button class="btn btn-primary" type="submit" value="Upload"> Upload </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm borderTop mt-4">
+                            <div class="card-body">
+                                <h2 class="text-center pb-3">Files</h2>
+                                <ul class="list-group" id="filesList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 py-2" id="users">
+                        <div class="card shadow-sm borderTop">
+                            <div class="card-body">
+                                <h2 class="text-center pb-3">Users</h2>
+                                <ul class="list-group" id="usersListitems"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
+
+
     <script src="/js/auth.js"> </script>
-    
+    <script src="/js/api.js"> </script>
+    <script>
+        var createFolderRef = document.getElementById('create_new_folder');
+        var uploadfilesRef = document.getElementById('upload_files');
+        var UsersRef = document.getElementById('users');
+        var usersListitemsRef = document.getElementById('usersListitems');
+        var folderslistRef = document.getElementById('folderslist');
+        var filesListRef = document.getElementById('filesList');
+        var navItem = document.getElementsByClassName('navItem');
+        var folders = [];
+        var users = [];
+        var files = [];
+        var selectedFolder = "";
+        var inputFoldernameRef = document.getElementById('inputFoldername');
+
+        createFolderRef.style.display = 'none';
+
+        function makeItActivaFirstOne() {
+            if (navItem.length != 0) {
+                navItem[0].classList.add('active');
+                selectedFolder = navItem[0].innerText;
+                inputFoldernameRef.value = selectedFolder;
+            }
+        }
+
+
+        function makeItActive(element, name) {
+            for (i = 0; i < navItem.length; i++) {
+                navItem[i].classList.remove('active');
+            }
+            element.classList.add('active');
+            selectedFolder = name;
+            inputFoldernameRef.value = selectedFolder;
+            resetUsers();
+            getFilesForSelectedFolder();
+        }
+
+        function getcreatenewfolder() {
+            createFolderRef.style.display = 'block';
+            UsersRef.style.display = 'none';
+            uploadfilesRef.style.display = 'none';
+        }
+
+
+        window.addEventListener('load', async () => {
+            getAllFolders();
+        })
+
+        async function getAllFolders() {
+            folders = await getFolders();
+            console.log("folders==>", folders);
+            folderslistRef.innerHTML = "";
+            folders.forEach((name) => {
+                folderslistRef.innerHTML += `<li class="nav-item navItem w-100" onClick="makeItActive(this, '${name}')">
+                            <a class="nav-link navLink" href="javascript:void(0)">${name}</a>
+                        </li>`
+            })
+            makeItActivaFirstOne();
+            resetUsers();
+            getFilesForSelectedFolder();
+        }
+
+        async function resetUsers() {
+            users = await getUsers();
+            console.log("users==>", users);
+            users.forEach(x => {
+                x.hasFolder = false;
+                if (x.folders.includes(selectedFolder)) {
+                    x.hasFolder = true;
+                }
+            })
+            usersListitemsRef.innerHTML = "";
+            users.forEach((item, index) => {
+                usersListitemsRef.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-start">
+                    <span> ${item.email} </span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" onchange="updateFolderToUser(${item.hasFolder}, '${item.email}', '${selectedFolder}')" ${item.hasFolder ? 'checked':""}>
+                    </div> 
+                </li>`
+            })
+        }
+
+        async function getFilesForSelectedFolder() {
+            files = await getFiles(selectedFolder);
+            console.log("files==>", files);
+
+            filesListRef.innerHTML = "";
+            files.forEach((name) => {
+                filesListRef.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="w-75"> ${name} </div>
+                    <div> 
+                        <button class="btn btn-link text-danger" onclick="deleteSelectedFile('${name}')">
+                            <i class="bi bi-trash"></i>                      
+                        </button>
+                    </div> 
+                </li>`
+            })
+        }
+
+        async function deleteSelectedFile(fileName) {
+            await deleteFile(selectedFolder, fileName);
+            getFilesForSelectedFolder();
+        }
+    </script>
+
     <script src="bootstrap/popper.min.js" crossorigin="anonymous"></script>
     <script src="bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
