@@ -32,7 +32,6 @@ const adduser = (req, res) => {
 const login = (req, res) => {
     try {
         let body = req.body;
-        console.log("body", body)
         let query = { email: body.email, password: body.password }
         user.findOne(query).then(
             doc => {

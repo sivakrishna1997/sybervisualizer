@@ -48,8 +48,6 @@ const saveFile = (file, folderName) => {
 
 const saveFiles = async (req, res) => {
     try {
-        console.log(req.body.folderName);
-        debugger
         const files = req.files.myfiles;
         const folderName = req.body.folderName;
 
@@ -94,7 +92,6 @@ const getFiles = async (req, res) => {
 
 const getFilesFromFolders = async (req, res) => {
     const { folders } = req.body;
-    console.log("folders", folders)
     var allFiles = [];
     if (folders.length !== 0) {
         folders.forEach(async (folder, index) => {
@@ -108,7 +105,6 @@ const getFilesFromFolders = async (req, res) => {
                 })
             })
             allFiles = [...allFiles, ...fetchedFiles];
-            console.log("allFiles", allFiles)
 
             if (index === folders.length - 1) {
                 if (allFiles.length === 0) {
